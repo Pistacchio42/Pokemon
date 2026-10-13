@@ -59,6 +59,7 @@ flutter:
   # the material Icons class.
   assets:
     - assets/csv/
+    - assets/balls/
     - assets/pkm/
 
   uses-material-design: true

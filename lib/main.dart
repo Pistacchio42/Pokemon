@@ -15,11 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'PokéDecks',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'PoKéDeX'),
     );
   }
 }
@@ -33,19 +33,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   List<Entry> pokemons = [];
 
   @override
   void initState() {
     super.initState();
-    //_counter=await readCounter();
-    int x = 389;
-
     valueLoader all = new valueLoader();
     all.loadCSV().then((value)=> {
-      print((value as List<Entry>).elementAt(100).sprite),
-      pokemons=value
+      setState(() {
+        pokemons=value;
+      })
     });
   }
 
@@ -62,49 +59,57 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<File> writeCounter(int counter) async {
     final file = await _localFile;
-
-    // Write the counter as a string to the file.
     return file.writeAsString('$counter');
   }
 
   Future<int> readCounter() async {
     try {
       final file = await _localFile;
-
-      // Read the contents of the local file.
       final contents = await file.readAsString();
-
       return int.parse(contents);
     } catch (_) {
-      // If an error was encountered, return 0.
       return 0;
     }
   }
 
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-    //writeCounter(_counter);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffc0e9f0),
       appBar: AppBar(
-
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text(widget.title),
+        backgroundColor: Color(0xffff0000),
+        title: Stack(
+          children: <Widget>[
+            // Stroked text as border.
+            Text(
+              widget.title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 7
+                  ..color = Color(0xffffffe3)!,
+              ),
+            ),
+            // Solid text as fill.
+            Text(
+              widget.title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                color: Colors.red,
+              ),
+            ),
+          ],
+        ),
       ),
+
       body: Center(
-
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
             Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.all(20),
@@ -122,10 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: openSearchDialog(),
+        tooltip: 'Search',
+        child: const Icon(Icons.search),
       ),
     );
   }
+
+  openSearchDialog() {}
 }

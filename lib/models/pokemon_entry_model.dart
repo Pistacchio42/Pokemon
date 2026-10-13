@@ -12,43 +12,74 @@ class Entry{
   final String sprite;
   bool caught;
   final Map<String, Color> typeColor = {
-    "Normal"    : Color(0xabab9a),
-    "Fire"      : Color(0xff4221),
-    "Water"     : Color(0x3399ff),
-    "Electric"  : Color(0xffcc33),
-    "Grass"     : Color(0x77cc56),
-    "Ice"       : Color(0x66ccff),
-    "Fighting"  : Color(0xba5543),
-    "Poison"    : Color(0xab559a),
-    "Ground"    : Color(0xdebb54),
-    "Flying"    : Color(0x8799ff),
-    "Psychic"   : Color(0xff5498),
-    "Bug"       : Color(0xa8ba22),
-    "Rock"      : Color(0xbaa966),
-    "Ghost"     : Color(0x6666ba),
-    "Dragon"    : Color(0x7866ed),
-    "Dark"      : Color(0x785544),
-    "Steel"     : Color(0xa9a9ba),
-    "Fairy"     : Color(0xed98ed)
+    "Normal"    : Color(0xffabab9a),
+    "Fire"      : Color(0xffff4221),
+    "Water"     : Color(0xff3399ff),
+    "Electric"  : Color(0xffffcc33),
+    "Grass"     : Color(0xff77cc56),
+    "Ice"       : Color(0xff66ccff),
+    "Fighting"  : Color(0xffba5543),
+    "Poison"    : Color(0xffab559a),
+    "Ground"    : Color(0xffdebb54),
+    "Flying"    : Color(0xff8799ff),
+    "Psychic"   : Color(0xffff5498),
+    "Bug"       : Color(0xffa8ba22),
+    "Rock"      : Color(0xffbaa966),
+    "Ghost"     : Color(0xff6666ba),
+    "Dragon"    : Color(0xff7866ed),
+    "Dark"      : Color(0xff785544),
+    "Steel"     : Color(0xffa9a9ba),
+    "Fairy"     : Color(0xffed98ed)
   };
 
   Entry(this.name, this.type1, this.type2, this.sprite, this.caught, {required this.number});
 
 
-  ListTile getEntry (){
-    return ListTile(
-      dense: false,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50)),
-      tileColor: typeColor[this.type1],
-      leading: SizedBox(
-        height: 200,
-        width: 100,
-        child: Image.asset("assets/pkm/"+sprite),
-      ),
-      title: Text(name),
-      subtitle: Text(number.toString()),
+  Stack getEntry (){
+    return Stack(
+
+      children: <Widget>[
+        Container(
+          height: 70,
+          margin: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(35),
+              color: Color(0xff3b4021),
+          ),
+        ),
+        Container(
+          height: 60,
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              // Create a gradient background
+              gradient: LinearGradient(
+                begin: Alignment(0.3, 0.4),
+                end: Alignment(0.3001, 0.4005),
+                colors: getColors(),
+              )
+          ),
+          child: ListTile(
+            dense: false,
+            leading: SizedBox(
+              child: Image.asset("assets/pkm/"+sprite),
+            ),
+            title: Text(name),
+            subtitle: Text("#"+number.toString()),
+            trailing: caughtFunc(),
+          ),
+        )
+      ]
     );
+  }
+
+  List<Color> getColors(){
+    if (type2 == "") return [?this.typeColor[this.type1],?this.typeColor[this.type1]];
+    return [?this.typeColor[this.type1], ?this.typeColor[this.type2]];
+  }
+
+  Image caughtFunc(){
+    return caught? Image.asset("assets/balls/caught.png"):Image.asset("assets/balls/free.png");
   }
 
 }

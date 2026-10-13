@@ -12,7 +12,7 @@ class valueLoader{
   Future<List<Entry>> loadCSV ()  async {
     final _rawData = await rootBundle.loadString('assets/csv/pokedex.csv');
     List<List<dynamic>> data = CsvToListConverter(eol: '\n').convert(_rawData);
-    await Future.delayed(const Duration(seconds: 1));
+    //await Future.delayed(const Duration(seconds: 1));
     //TODO trova un modo migliore di avere tutta la lista
     print(data.length);
 
