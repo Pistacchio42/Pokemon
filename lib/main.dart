@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-
-import 'package:pokemon/ValueLoader.dart';
+import 'package:pokemon/models/pokemon_entry_model.dart';
+import 'package:pokemon/valueLoader.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,13 +34,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<Entry> pokemons = [];
 
   @override
   void initState() {
     super.initState();
     //_counter=await readCounter();
     int x = 389;
-    valueLoader a = new valueLoader();
+
+    valueLoader all = new valueLoader();
+    all.loadCSV().then((value)=> {
+      print((value as List<Entry>).elementAt(100).sprite),
+      pokemons=value
+    });
   }
 
   Future<String> get _localPath async {
@@ -99,9 +105,18 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(20),
+                  itemCount: pokemons.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return Column(
+                      children: <Widget>[
+                        pokemons[index].getEntry(),
+                      ],
+                    );
+                  }
+                )
             ),
           ],
         ),
