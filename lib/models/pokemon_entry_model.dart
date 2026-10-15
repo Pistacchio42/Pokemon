@@ -4,13 +4,30 @@ import 'package:flutter/material.dart';
 
 class Entry{
 
-
-  final double number;
+  final int number;
   final String name;
   final String type1;
   final String type2;
   final String sprite;
   bool caught;
+
+  final int speed;
+  final int specialDef;
+  final int specialAtk;
+  final int def;
+  final int atk;
+  final int hitPoints;
+  final String ability1;
+  final String ability2;
+  final String secretAbility;
+  final double height;
+  final double weight;
+  final String pokeDexColor;
+  final String genderRatio;
+  final String evoLevel;
+  final String description;
+  final String specie;
+
   final Map<String, Color> typeColor = {
     "Normal"    : Color(0xffabab9a),
     "Fire"      : Color(0xffff4221),
@@ -32,10 +49,13 @@ class Entry{
     "Fairy"     : Color(0xffed98ed)
   };
 
-  Entry(this.name, this.type1, this.type2, this.sprite, this.caught, {required this.number});
+  Entry(this.name, this.type1, this.type2, this.sprite, this.caught, this.speed,
+      this.specialDef, this.specialAtk, this.def, this.atk, this.hitPoints,
+      this.ability1, this.ability2, this.secretAbility, this.height, this.weight,
+      this.pokeDexColor, this.genderRatio, this.evoLevel, this.description,this.specie, {required this.number});
 
 
-  Stack getEntry (){
+  Stack getEntry (void Function() foo, context){
     return Stack(
 
       children: <Widget>[
@@ -47,28 +67,31 @@ class Entry{
               color: Color(0xff3b4021),
           ),
         ),
-        Container(
-          height: 60,
-          margin: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              // Create a gradient background
-              gradient: LinearGradient(
-                begin: Alignment(0.3, 0.4),
-                end: Alignment(0.3001, 0.4005),
-                colors: getColors(),
-              )
-          ),
-          child: ListTile(
-            dense: false,
-            leading: SizedBox(
-              child: Image.asset("assets/pkm/"+sprite),
+        GestureDetector(
+          onDoubleTap: ()=>{openMenu(foo,context)},
+          child: Container(
+            height: 60,
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                // Create a gradient background
+                gradient: LinearGradient(
+                  begin: Alignment(0.3, 0.4),
+                  end: Alignment(0.3001, 0.4005),
+                  colors: getColors(),
+                )
             ),
-            title: Text(name),
-            subtitle: Text("#"+number.toString()),
-            trailing: caughtFunc(),
+            child: ListTile(
+              dense: false,
+              leading: SizedBox(
+                child: Image.asset("assets/pkm/"+sprite),
+              ),
+              title: Text(name),
+              subtitle: Text("#"+number.toString()),
+              trailing: IconButton(onPressed: ()=>{toggleCaught(), foo()}, icon: caught? Image.asset("assets/balls/caught.png"):Image.asset("assets/balls/free.png")),
+            ),
           ),
-        )
+        ),
       ]
     );
   }
@@ -82,4 +105,39 @@ class Entry{
     return caught? Image.asset("assets/balls/caught.png"):Image.asset("assets/balls/free.png");
   }
 
+
+  void toggleCaught() {
+    print("$name caught!");
+    caught=!caught;
+  }
+
+  Future<void> openMenu(void Function() foo, context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(name),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('The $specie pokémon'),
+                Text(description),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Catch!'),
+              onPressed: () {
+                toggleCaught();
+                foo();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
