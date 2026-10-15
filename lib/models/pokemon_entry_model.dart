@@ -140,15 +140,22 @@ class Entry {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          backgroundColor: Color(0xffD6F6CD),
+          backgroundColor: Colors.transparent,
+
           child: Container(
-            margin: EdgeInsets.all(20),
+            height: 500,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Color(0xffD6F6CD),
+              borderRadius: BorderRadius.circular(40),
+            ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                   decoration: BoxDecoration(
                     color: Color(0xff838471),
                     borderRadius: BorderRadius.circular(15),
@@ -163,11 +170,11 @@ class Entry {
                   ),
                 ),
                 Row(
+                  spacing: 10,
                   children: <Widget>[
                     //immagine
                     Container(
                       padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(20),
                       child: Image.asset("assets/pkm/" + sprite),
                       decoration: BoxDecoration(
                         color: Color(0xffF8F7FF),
@@ -194,7 +201,6 @@ class Entry {
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.all(20),
                   child: Text(description),
                   decoration: BoxDecoration(
                     color: Color(0xffF8F7FF),
@@ -202,7 +208,6 @@ class Entry {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 20)),
                 TextButton(
                   child: const Text('Catch!', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),),
                   onPressed: () {
