@@ -1,9 +1,6 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
-class Entry{
-
+class Entry {
   final int number;
   final String name;
   final String type1;
@@ -29,115 +26,240 @@ class Entry{
   final String specie;
 
   final Map<String, Color> typeColor = {
-    "Normal"    : Color(0xffabab9a),
-    "Fire"      : Color(0xffff4221),
-    "Water"     : Color(0xff3399ff),
-    "Electric"  : Color(0xffffcc33),
-    "Grass"     : Color(0xff77cc56),
-    "Ice"       : Color(0xff66ccff),
-    "Fighting"  : Color(0xffba5543),
-    "Poison"    : Color(0xffab559a),
-    "Ground"    : Color(0xffdebb54),
-    "Flying"    : Color(0xff8799ff),
-    "Psychic"   : Color(0xffff5498),
-    "Bug"       : Color(0xffa8ba22),
-    "Rock"      : Color(0xffbaa966),
-    "Ghost"     : Color(0xff6666ba),
-    "Dragon"    : Color(0xff7866ed),
-    "Dark"      : Color(0xff785544),
-    "Steel"     : Color(0xffa9a9ba),
-    "Fairy"     : Color(0xffed98ed)
+    "Normal": Color(0xffabab9a),
+    "Fire": Color(0xffff4221),
+    "Water": Color(0xff3399ff),
+    "Electric": Color(0xffffcc33),
+    "Grass": Color(0xff77cc56),
+    "Ice": Color(0xff66ccff),
+    "Fighting": Color(0xffba5543),
+    "Poison": Color(0xffab559a),
+    "Ground": Color(0xffdebb54),
+    "Flying": Color(0xff8799ff),
+    "Psychic": Color(0xffff5498),
+    "Bug": Color(0xffa8ba22),
+    "Rock": Color(0xffbaa966),
+    "Ghost": Color(0xff6666ba),
+    "Dragon": Color(0xff7866ed),
+    "Dark": Color(0xff785544),
+    "Steel": Color(0xffa9a9ba),
+    "Fairy": Color(0xffed98ed),
   };
 
-  Entry(this.name, this.type1, this.type2, this.sprite, this.caught, this.speed,
-      this.specialDef, this.specialAtk, this.def, this.atk, this.hitPoints,
-      this.ability1, this.ability2, this.secretAbility, this.height, this.weight,
-      this.pokeDexColor, this.genderRatio, this.evoLevel, this.description,this.specie, {required this.number});
+  Entry(
+    this.name,
+    this.type1,
+    this.type2,
+    this.sprite,
+    this.caught,
+    this.speed,
+    this.specialDef,
+    this.specialAtk,
+    this.def,
+    this.atk,
+    this.hitPoints,
+    this.ability1,
+    this.ability2,
+    this.secretAbility,
+    this.height,
+    this.weight,
+    this.pokeDexColor,
+    this.genderRatio,
+    this.evoLevel,
+    this.description,
+    this.specie, {
+    required this.number,
+  });
 
-
-  Stack getEntry (void Function() foo, context){
+  Stack getEntry(void Function() foo, context) {
     return Stack(
-
       children: <Widget>[
         Container(
           height: 70,
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(35),
-              color: Color(0xff3b4021),
+            borderRadius: BorderRadius.circular(35),
+            color: Color(0xff3b4021),
           ),
         ),
         GestureDetector(
-          onDoubleTap: ()=>{openMenu(foo,context)},
+          onDoubleTap: () => {openMenu(foo, context)},
           child: Container(
             height: 60,
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                // Create a gradient background
-                gradient: LinearGradient(
-                  begin: Alignment(0.3, 0.4),
-                  end: Alignment(0.3001, 0.4005),
-                  colors: getColors(),
-                )
+              borderRadius: BorderRadius.circular(30),
+              // Create a gradient background
+              gradient: LinearGradient(
+                begin: Alignment(0.3, 0.4),
+                end: Alignment(0.3001, 0.4005),
+                colors: getColors(),
+              ),
             ),
             child: ListTile(
               dense: false,
-              leading: SizedBox(
-                child: Image.asset("assets/pkm/"+sprite),
-              ),
+              leading: SizedBox(child: Image.asset("assets/pkm/" + sprite)),
               title: Text(name),
-              subtitle: Text("#"+number.toString()),
-              trailing: IconButton(onPressed: ()=>{toggleCaught(), foo()}, icon: caught? Image.asset("assets/balls/caught.png"):Image.asset("assets/balls/free.png")),
+              subtitle: Text("#" + number.toString()),
+              trailing: IconButton(
+                onPressed: () => {toggleCaught(), foo()},
+                icon: caught
+                    ? Image.asset("assets/balls/caught.png")
+                    : Image.asset("assets/balls/free.png"),
+              ),
             ),
           ),
         ),
-      ]
+      ],
     );
   }
 
-  List<Color> getColors(){
-    if (type2 == "") return [?this.typeColor[this.type1],?this.typeColor[this.type1]];
+  List<Color> getColors() {
+    if (type2 == "")
+      return [?this.typeColor[this.type1], ?this.typeColor[this.type1]];
     return [?this.typeColor[this.type1], ?this.typeColor[this.type2]];
   }
 
-  Image caughtFunc(){
-    return caught? Image.asset("assets/balls/caught.png"):Image.asset("assets/balls/free.png");
+  Image caughtFunc() {
+    return caught
+        ? Image.asset("assets/balls/caught.png")
+        : Image.asset("assets/balls/free.png");
   }
-
 
   void toggleCaught() {
     print("$name caught!");
-    caught=!caught;
+    caught = !caught;
   }
 
   Future<void> openMenu(void Function() foo, context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(name),
-          content: SingleChildScrollView(
-            child: ListBody(
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          backgroundColor: Color(0xffD6F6CD),
+          child: Container(
+            margin: EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('The $specie pokémon'),
-                Text(description),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Color(0xff838471),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Text(
+                    "INFO",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    //immagine
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(20),
+                      child: Image.asset("assets/pkm/" + sprite),
+                      decoration: BoxDecoration(
+                        color: Color(0xffF8F7FF),
+                        border: Border.all(color: Color(0xffAECA9C), width: 8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        spacing: 5,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("#"+sprite.substring(0,sprite.length-4)+" - $name", style: massimoBoldMe()),
+                          Text("The $specie pokémon", style: massimoBoldMe()),
+                          getTypeBoxes(),
+                          Text("HT $height m", style: massimoBoldMe()),
+                          Text("WT $weight Kg", style: massimoBoldMe()),
+                        ],
+                      ),
+                    ),
+                    //Colonna dei dettagli, in ordine:numero nome, \n  specie Pokemon \n tipo/i  \n altezza \n peso
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(20),
+                  child: Text(description),
+                  decoration: BoxDecoration(
+                    color: Color(0xffF8F7FF),
+                    border: Border.all(color: Color(0xff85ACF7), width: 8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 20)),
+                TextButton(
+                  child: const Text('Catch!', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),),
+                  onPressed: () {
+                    toggleCaught();
+                    foo();
+                    Navigator.of(context).pop();
+                  },
+                ),
               ],
             ),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Catch!'),
-              onPressed: () {
-                toggleCaught();
-                foo();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     );
+  }
+
+  Row getTypeBoxes() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      spacing: 10,
+      children: <Widget>[
+        singularCont(this.type1),
+        if (this.type2 != null) singularCont(this.type2),
+      ],
+    );
+  }
+
+  Container singularCont(type) {
+    return Container(
+      alignment: Alignment.center,
+      width: 70,
+      height: 30,
+      decoration: BoxDecoration(
+        color: typeColor[type],
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Stack(
+        children: <Widget>[
+          // Stroked text as border.
+          Text(
+            type,
+            style: TextStyle(
+              fontSize: 15,
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 6
+                ..color = Color(0xff636065),
+            ),
+          ),
+          // Solid text as fill.
+          Text(type, style: TextStyle(fontSize: 15, color: Colors.white)),
+        ],
+      ),
+    );
+  }
+
+  TextStyle massimoBoldMe() {
+    return TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
   }
 }

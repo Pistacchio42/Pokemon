@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:pokemon/models/pokemon_entry_model.dart';
 import 'package:pokemon/valueLoader.dart';
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -34,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Entry> pokemons = [];
+  bool toggle = false;
 
   @override
   void initState() {
@@ -44,6 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
         pokemons=value;
       })
     });
+
+    loadPokemons();
+
   }
 
   Future<String> get _localPath async {
@@ -57,20 +62,27 @@ class _MyHomePageState extends State<MyHomePage> {
     return File('$path/counter.txt');
   }
 
-  Future<File> writeCounter(int counter) async {
+  Future<File> writeCounter(List<bool> counter) async {
     final file = await _localFile;
-    print(counter);
-    return file.writeAsString('$counter');
+    counter?? [];
+    String pookes ="";
+    counter.forEach((value)=>{
+      pookes = pookes + (value?"t":"f"),
+    });
+    return file.writeAsString(pookes.substring(0, pookes.length-1));
   }
 
-  Future<int> readCounter() async {
-    try {
+  Future<List<bool>> readCounter() async {
       final file = await _localFile;
-      final contents = await file.readAsString();
-      return int.parse(contents);
-    } catch (_) {
-      return 0;
-    }
+      final String contents = await file.readAsString();
+      List<bool> re = [];
+      contents.runes.forEach((int rune) {
+        var character=new String.fromCharCode(rune);
+        re.add(character=="t");
+      });
+
+    return re;
+
   }
 
 
@@ -80,6 +92,9 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Color(0xffc0e9f0),
       appBar: AppBar(
         backgroundColor: Color(0xffff0000),
+        actions: [
+          IconButton(onPressed: openSearchDialog, icon: Icon(Icons.search))
+        ],
         title: Stack(
           children: <Widget>[
             // Stroked text as border.
@@ -127,20 +142,27 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: openSearchDialog(),
-        tooltip: 'Search',
-        child: const Icon(Icons.search),
-      ),
     );
   }
 
-  openSearchDialog()  {
+  openSearchDialog() {
   }
 
   void resetStage(){
     print("setstate");
     setState(() {});
+    List<bool> caught= [];
+    pokemons.forEach((value)=>{
+      caught.add(value.caught)
+    });
+    writeCounter(caught);
+  }
+
+  Future<void> loadPokemons() async {
+    List<bool>  caughtPokemon = await readCounter();
+    setState(() {
+      for (int i =0; i< pokemons.length; i++) pokemons[i].caught=caughtPokemon[i];
+    });
   }
 
 }
