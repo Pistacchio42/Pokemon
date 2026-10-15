@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<File> writeCounter(int counter) async {
     final file = await _localFile;
+    print(counter);
     return file.writeAsString('$counter');
   }
 
@@ -99,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
-                color: Colors.red,
+                color: Color(0xffff0000),
               ),
             ),
           ],
@@ -117,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemBuilder: (BuildContext context, int index){
                     return Column(
                       children: <Widget>[
-                        pokemons[index].getEntry(),
+                        pokemons[index].getEntry(resetStage,context),
                       ],
                     );
                   }
@@ -134,5 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  openSearchDialog() {}
+  openSearchDialog()  {
+  }
+
+  void resetStage(){
+    print("setstate");
+    setState(() {});
+  }
+
 }
