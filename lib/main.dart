@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PokéDecks',
+      title: 'PokéDeckS',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
@@ -194,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      hintText: 'Enter PokèDex number',
+                      hintText: 'Enter PokéDex number',
                     ),
                   ),
                   TextField(
@@ -209,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      hintText: 'Enter PokèMon name',
+                      hintText: 'Enter PokéMon name',
                     ),
                   ),
                 ],
