@@ -162,14 +162,34 @@ class Entry {
                     color: Color(0xff838471),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Text(
-                    "INFO",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "INFO",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        width: 50,
+                        child: IconButton(
+                          padding: EdgeInsets.all(0),
+                          alignment: Alignment.center,
+                          onPressed: () => {
+                            toggleCaught(), foo(),
+                            Navigator.of(context).pop(),
+                          },
+                          icon: caught
+                              ? Image.asset("assets/balls/caught.png")
+                              : Image.asset("assets/balls/free.png"),
+                        ),
+                      ),
+                    ],
+                  )
                 ),
                 Row(
                   spacing: 10,
@@ -223,14 +243,7 @@ class Entry {
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                TextButton(
-                  child: const Text('Catch!', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),),
-                  onPressed: () {
-                    toggleCaught();
-                    foo();
-                    Navigator.of(context).pop();
-                  },
-                ),
+
               ],
             ),
           ),

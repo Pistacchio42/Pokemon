@@ -8,18 +8,15 @@ import 'package:pokemon/models/pokemon_entry_model.dart';
 class valueLoader{
 
   List<Entry> pkm = [];
-  Map<String, int> reverseSearch = new Map();
+  Map<String, int> reverseSearch = {};
 
   Future<List<Entry>> loadCSV ()  async {
     final _rawData = await rootBundle.loadString('assets/csv/pokedex2.csv');
     List<List<dynamic>> data = CsvToListConverter(eol: '\n').convert(_rawData);
-    //await Future.delayed(const Duration(seconds: 1));
-    //TODO trova un modo migliore di avere tutta la lista
     print(data.length);
-
     data.forEach((pokemon) async{
 
-      //reverseSearch.putIfAbsent(pokemon[1],pokemon[0]);
+      reverseSearch[pokemon[1]] = pokemon[0];
 
       String a = "000" + pokemon[0].toString();
       double height = pokemon[44].toDouble();
@@ -33,8 +30,8 @@ class valueLoader{
     return pkm;
   }
 
-  Map<String, int> getReverseList () {
-    return this.reverseSearch;
+  Future<Map<String, int>> getReverseList () async{
+    return reverseSearch;
   }
   
 

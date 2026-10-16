@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
-      home: const MyHomePage(title: 'PoKéDeX'),
+      home: const MyHomePage(title: 'PoKéDeckS'),
     );
   }
 }
@@ -37,6 +37,16 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Entry> pokemons = [];
   Map<String, int> search = new Map();
   bool toggle = false;
+  final nameController = TextEditingController();
+  final numberController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    nameController.dispose();
+    numberController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -45,7 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
     all.loadCSV().then((value)=> {
       setState(() {
         pokemons=value;
-        search=all.reverseSearch;
+      })
+    });
+    all.getReverseList().then((onValue)=>{
+      setState(() {
+        search= onValue;
       })
     });
     loadPokemons();
@@ -96,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Color(0xffff0000),
         actions: [
           IconButton(onPressed: ()=>{
-            //openSearchDialog(context)
+            openSearchDialog(context)
           }, icon: Icon(Icons.search))
         ],
         title: Stack(
@@ -161,11 +175,43 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             child: Container(
+              height: 130,
+              width: 400,
+              margin: EdgeInsets.all(20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  TextField(),
-                  TextField(),
-                  IconButton(onPressed: searchThisPokemon("",0), icon: Icon(Icons.check)),
+                  TextField(
+                    onSubmitted: (value)=>{
+                      Navigator.of(context).pop(),
+                      searchThisPokemonNumber(int.parse(value)),
+                      nameController.clear(),
+                      numberController.clear(),
+                    },
+                    keyboardType: TextInputType.number,
+                    controller: numberController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      hintText: 'Enter PokèDex number',
+                    ),
+                  ),
+                  TextField(
+                    onSubmitted: (value)=>{
+                      Navigator.of(context).pop(),
+                      searchThisPokemonName(value),
+                      nameController.clear(),
+                      numberController.clear(),
+                    },
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      hintText: 'Enter PokèMon name',
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -191,6 +237,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  searchThisPokemon(String name, int range) {}
+  searchThisPokemonNumber(int range) {
+    setState(() {
+      pokemons[range-1].openMenu(resetStage, context);
+    });
+  }
+
+  searchThisPokemonName(String range) {
+    setState(() {
+      pokemons[search[range]!-1].openMenu(resetStage, context);
+    });
+  }
 
 }
