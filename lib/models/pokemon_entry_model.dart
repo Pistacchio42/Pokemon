@@ -145,7 +145,7 @@ class Entry {
           backgroundColor: Colors.transparent,
           insetPadding: EdgeInsets.all(10),
           child: Container(
-            height: 600,
+            height: 500,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Color(0xffD6F6CD),
