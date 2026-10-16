@@ -75,20 +75,20 @@ class Entry {
     return Stack(
       children: <Widget>[
         Container(
-          height: 70,
+          height: 80,
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(35),
+            borderRadius: BorderRadius.circular(40),
             color: Color(0xff3b4021),
           ),
         ),
         GestureDetector(
-          onDoubleTap: () => {openMenu(foo, context)},
+          onTap: () => {openMenu(foo, context)},
           child: Container(
-            height: 60,
+            height: 70,
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(35),
               // Create a gradient background
               gradient: LinearGradient(
                 begin: Alignment(0.3, 0.4),
@@ -98,10 +98,12 @@ class Entry {
             ),
             child: ListTile(
               dense: false,
-              leading: SizedBox(child: Image.asset("assets/pkm/" + sprite)),
-              title: Text(name),
-              subtitle: Text("#" + number.toString()),
+              leading: Image.asset("assets/pkm/" + sprite),
+              title: Text(name, style: massimoBoldMe(),),
+              subtitle: Text("#"+sprite.substring(0,sprite.length-4)),
               trailing: IconButton(
+                padding: EdgeInsets.all(0),
+                alignment: Alignment.center,
                 onPressed: () => {toggleCaught(), foo()},
                 icon: caught
                     ? Image.asset("assets/balls/caught.png")
@@ -141,9 +143,9 @@ class Entry {
             borderRadius: BorderRadius.circular(30),
           ),
           backgroundColor: Colors.transparent,
-
+          insetPadding: EdgeInsets.all(10),
           child: Container(
-            height: 500,
+            height: 600,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Color(0xffD6F6CD),
@@ -188,8 +190,21 @@ class Entry {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("#"+sprite.substring(0,sprite.length-4)+" - $name", style: massimoBoldMe()),
-                          Text("The $specie pokémon", style: massimoBoldMe()),
+                          Container(
+                            width: 1000,
+                            padding: EdgeInsets.fromLTRB(5, 10, 0, 10),
+                            decoration: BoxDecoration(
+                              color: Color(0xffFFFFC7),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("#"+sprite.substring(0,sprite.length-4)+" - $name", style: massimoBoldMe()),
+                                Text("The $specie pokémon", style: massimoBoldMe()),
+                              ],
+                            ),
+                          ),
                           getTypeBoxes(),
                           Text("HT $height m", style: massimoBoldMe()),
                           Text("WT $weight Kg", style: massimoBoldMe()),
@@ -236,12 +251,14 @@ class Entry {
   }
 
   Container singularCont(type) {
+    if(type=="") return Container();
     return Container(
       alignment: Alignment.center,
       width: 70,
       height: 30,
       decoration: BoxDecoration(
         color: typeColor[type],
+        border: Border.all(color: Color(0xff556553), width: 2),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Stack(
@@ -253,7 +270,7 @@ class Entry {
               fontSize: 15,
               foreground: Paint()
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = 6
+                ..strokeWidth = 3
                 ..color = Color(0xff636065),
             ),
           ),

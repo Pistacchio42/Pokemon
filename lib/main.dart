@@ -35,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Entry> pokemons = [];
+  Map<String, int> search = new Map();
   bool toggle = false;
 
   @override
@@ -44,10 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
     all.loadCSV().then((value)=> {
       setState(() {
         pokemons=value;
+        search=all.reverseSearch;
       })
     });
-
     loadPokemons();
+
 
   }
 
@@ -93,7 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Color(0xffff0000),
         actions: [
-          IconButton(onPressed: openSearchDialog, icon: Icon(Icons.search))
+          IconButton(onPressed: ()=>{
+            //openSearchDialog(context)
+          }, icon: Icon(Icons.search))
         ],
         title: Stack(
           children: <Widget>[
@@ -145,7 +149,29 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  openSearchDialog() {
+  openSearchDialog(context) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return Dialog(
+
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  TextField(),
+                  TextField(),
+                  IconButton(onPressed: searchThisPokemon("",0), icon: Icon(Icons.check)),
+                ],
+              ),
+            ),
+          );
+        }
+    );
   }
 
   void resetStage(){
@@ -164,5 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
       for (int i =0; i< pokemons.length; i++) pokemons[i].caught=caughtPokemon[i];
     });
   }
+
+  searchThisPokemon(String name, int range) {}
 
 }

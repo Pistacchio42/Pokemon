@@ -8,6 +8,7 @@ import 'package:pokemon/models/pokemon_entry_model.dart';
 class valueLoader{
 
   List<Entry> pkm = [];
+  Map<String, int> reverseSearch = new Map();
 
   Future<List<Entry>> loadCSV ()  async {
     final _rawData = await rootBundle.loadString('assets/csv/pokedex2.csv');
@@ -17,22 +18,10 @@ class valueLoader{
     print(data.length);
 
     data.forEach((pokemon) async{
+
+      //reverseSearch.putIfAbsent(pokemon[1],pokemon[0]);
+
       String a = "000" + pokemon[0].toString();
-      //speed = pokemon[36]
-      //Special Defense = 35
-      //special Attack = 34
-      //Defense = 33
-      //Attack = 32
-      //Hit Points = 31
-      //Ability 1 = 40
-      //Ability 2 = 41
-      //Abilità nascosta = 42
-      //Altezza in metri = 44
-      //Peso in kg = 46
-      //percentuale cattura = 54
-      //colore pokedex = 57
-      // gender ratio = 58
-      // evolution level = 62
       double height = pokemon[44].toDouble();
       double weight = pokemon[46].toDouble();
       String description = pokemon[63];
@@ -42,6 +31,10 @@ class valueLoader{
           pokemon[32], pokemon[31], pokemon[40], pokemon[41], pokemon[42], height, weight, pokemon[57], pokemon[58], pokemon[62], description, species, number: pokemon[0]));
     });
     return pkm;
+  }
+
+  Map<String, int> getReverseList () {
+    return this.reverseSearch;
   }
   
 
